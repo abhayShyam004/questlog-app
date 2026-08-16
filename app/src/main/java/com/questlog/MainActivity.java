@@ -2,6 +2,7 @@ package com.questlog;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,42 +29,57 @@ public class MainActivity extends AppCompatActivity {
 
     String[] rankIds={"E","D","C","B","A","S"};
     int[] rankMins={0,100,300,600,1000,1600};
-    String[] rankNames={"E — Novice","D — Apprentice","C — Adept","B — Veteran","A — Master","S — Legend"};
+    String[] rankNames={"E - Novice","D - Apprentice","C - Adept","B - Veteran","A - Master","S - Legend"};
 
     @Override protected void onCreate(Bundle b){
         super.onCreate(b);
-        setContentView(R.layout.activity_main);
-        rankBadge=findViewById(R.id.rankBadge);
-        heroLevel=findViewById(R.id.heroLevel);
-        rankLabel=findViewById(R.id.rankLabel);
-        xpLabel=findViewById(R.id.xpLabel);
-        xpBar=findViewById(R.id.xpBar);
-        badgesRow=findViewById(R.id.badgesRow);
-        diffSeek=findViewById(R.id.diffSeek);
-        diffLabel=findViewById(R.id.diffLabel);
-        questInput=findViewById(R.id.questInput);
-        recycler=findViewById(R.id.recycler);
-        recycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter=new QuestAdapter();
-        recycler.setAdapter(adapter);
+        try {
+            setContentView(R.layout.activity_main);
+            rankBadge=findViewById(R.id.rankBadge);
+            heroLevel=findViewById(R.id.heroLevel);
+            rankLabel=findViewById(R.id.rankLabel);
+            xpLabel=findViewById(R.id.xpLabel);
+            xpBar=findViewById(R.id.xpBar);
+            badgesRow=findViewById(R.id.badgesRow);
+            diffSeek=findViewById(R.id.diffSeek);
+            diffLabel=findViewById(R.id.diffLabel);
+            questInput=findViewById(R.id.questInput);
+            recycler=findViewById(R.id.recycler);
+            recycler.setLayoutManager(new LinearLayoutManager(this));
+            recycler.setNestedScrollingEnabled(false);
+            adapter=new QuestAdapter();
+            recycler.setAdapter(adapter);
 
-        load();
-        diffSeek.setProgress(selectedDiff-1);
-        updateDiffLabel();
-        diffSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
-            public void onProgressChanged(SeekBar s,int p,boolean fromUser){ selectedDiff=p+1; updateDiffLabel(); }
-            public void onStartTrackingTouch(SeekBar s){}
-            public void onStopTrackingTouch(SeekBar s){}
-        });
-        findViewById(R.id.addBtn).setOnClickListener(v->addQuest());
-        questInput.setOnEditorActionListener((v,actionId,event)->{ addQuest(); return true; });
-        findViewById(R.id.tabAll).setOnClickListener(v->setFilter("all"));
-        findViewById(R.id.tabActive).setOnClickListener(v->setFilter("active"));
-        findViewById(R.id.tabDone).setOnClickListener(v->setFilter("done"));
-        render();
+            load();
+            diffSeek.setProgress(selectedDiff-1);
+            updateDiffLabel();
+            diffSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+                public void onProgressChanged(SeekBar s,int p,boolean fromUser){ selectedDiff=p+1; updateDiffLabel(); }
+                public void onStartTrackingTouch(SeekBar s){}
+                public void onStopTrackingTouch(SeekBar s){}
+            });
+            View addBtn = findViewById(R.id.addBtn);
+            if(addBtn!=null) addBtn.setOnClickListener(v->addQuest());
+            questInput.setOnEditorActionListener((v,actionId,event)->{ addQuest(); return true; });
+            View tabAll=findViewById(R.id.tabAll);
+            View tabActive=findViewById(R.id.tabActive);
+            View tabDone=findViewById(R.id.tabDone);
+            if(tabAll!=null) tabAll.setOnClickListener(v->setFilter("all"));
+            if(tabActive!=null) tabActive.setOnClickListener(v->setFilter("active"));
+            if(tabDone!=null) tabDone.setOnClickListener(v->setFilter("done"));
+            render();
+        } catch(Exception e){
+            android.util.Log.e("QuestLog", "onCreate crash", e);
+            // Fallback minimal UI so app doesn't just die
+            TextView tv=new TextView(this);
+            tv.setText("Quest Log error: "+e.getMessage()+"\nPlease report this screen.");
+            tv.setPadding(32,32,32,32);
+            tv.setTextColor(0xFFFF4444);
+            setContentView(tv);
+        }
     }
 
-    void updateDiffLabel(){ diffLabel.setText("LV. "+selectedDiff+"  →  +"+(selectedDiff*10)+" XP"); }
+    void updateDiffLabel(){ if(diffLabel!=null) diffLabel.setText("LV. "+selectedDiff+"  ->  +"+(selectedDiff*10)+" XP"); }
 
     void addQuest(){
         String t=questInput.getText().toString().trim();
@@ -77,37 +93,42 @@ public class MainActivity extends AppCompatActivity {
     int rankIndex(int xp){ for(int i=rankMins.length-1;i>=0;i--) if(xp>=rankMins[i]) return i; return 0; }
 
     void render(){
-        int xp=totalXp();
-        int ri=rankIndex(xp);
-        String rank=rankIds[ri];
-        int nextMin = ri<rankMins.length-1 ? rankMins[ri+1] : rankMins[ri];
-        boolean isMax = ri==rankMins.length-1;
-        int range = isMax?1:(nextMin - rankMins[ri]);
-        int prog = isMax?100: Math.round(((xp - rankMins[ri])/(float)range)*100);
+        try {
+            int xp=totalXp();
+            int ri=rankIndex(xp);
+            String rank=rankIds[ri];
+            int nextMin = ri<rankMins.length-1 ? rankMins[ri+1] : rankMins[ri];
+            boolean isMax = ri==rankMins.length-1;
+            int range = isMax?1:(nextMin - rankMins[ri]);
+            int prog = isMax?100: Math.round(((xp - rankMins[ri])/(float)range)*100);
 
-        heroLevel.setText("LV."+(xp/100+1)+"  •  "+xp+" XP");
-        rankLabel.setText(rankNames[ri]);
-        xpLabel.setText(isMax ? xp+" / MAX" : xp+" / "+nextMin+" XP → "+rankIds[ri+1]);
-        xpBar.setMax(100); xpBar.setProgress(prog);
-        rankBadge.setText(rank);
-        int[] rankColors={0xFF5a5a6a,0xFF2d8a4e,0xFF2e7bcf,0xFF7c3aed,0xFFe67e22,0xFFffd700};
-        rankBadge.setBackgroundColor(rankColors[ri]);
+            if(heroLevel!=null) heroLevel.setText("LV."+(xp/100+1)+"  -  "+xp+" XP");
+            if(rankLabel!=null) rankLabel.setText(rankNames[ri]);
+            if(xpLabel!=null) xpLabel.setText(isMax ? xp+" / MAX" : xp+" / "+nextMin+" XP -> "+rankIds[ri+1]);
+            if(xpBar!=null){ xpBar.setMax(100); xpBar.setProgress(prog); }
+            if(rankBadge!=null){ rankBadge.setText(rank); int[] rankColors={0xFF5a5a6a,0xFF2d8a4e,0xFF2e7bcf,0xFF7c3aed,0xFFe67e22,0xFFffd700}; rankBadge.setBackgroundColor(rankColors[ri]); }
 
-        badgesRow.removeAllViews();
-        for(int i=0;i<=ri;i++){
-            TextView tv=new TextView(this);
-            tv.setText(rankIds[i]); tv.setTextSize(10); tv.setTextColor(0xFF0e0e1a);
-            tv.setPadding(14,6,14,6); tv.setBackgroundColor(rankColors[i]);
-            LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(-2,-2); lp.setMargins(0,0,8,0); tv.setLayoutParams(lp);
-            badgesRow.addView(tv);
-        }
-        // highlight filter
-        int activeBg=0xFFc9a227, idleBg=0xFF2a2440;
-        findViewById(R.id.tabAll).setBackgroundColor(filter.equals("all")?activeBg:idleBg);
-        findViewById(R.id.tabActive).setBackgroundColor(filter.equals("active")?activeBg:idleBg);
-        findViewById(R.id.tabDone).setBackgroundColor(filter.equals("done")?activeBg:idleBg);
+            if(badgesRow!=null){
+                badgesRow.removeAllViews();
+                int[] rankColors={0xFF5a5a6a,0xFF2d8a4e,0xFF2e7bcf,0xFF7c3aed,0xFFe67e22,0xFFffd700};
+                for(int i=0;i<=ri;i++){
+                    TextView tv=new TextView(this);
+                    tv.setText(rankIds[i]); tv.setTextSize(10); tv.setTextColor(0xFF0e0e1a);
+                    tv.setPadding(14,6,14,6); tv.setBackgroundColor(rankColors[i]);
+                    LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(-2,-2); lp.setMargins(0,0,8,0); tv.setLayoutParams(lp);
+                    badgesRow.addView(tv);
+                }
+            }
+            View tabAll=findViewById(R.id.tabAll);
+            View tabActive=findViewById(R.id.tabActive);
+            View tabDone=findViewById(R.id.tabDone);
+            int activeBg=0xFFc9a227, idleBg=0xFF2a2440;
+            if(tabAll!=null) tabAll.setBackgroundColor(filter.equals("all")?activeBg:idleBg);
+            if(tabActive!=null) tabActive.setBackgroundColor(filter.equals("active")?activeBg:idleBg);
+            if(tabDone!=null) tabDone.setBackgroundColor(filter.equals("done")?activeBg:idleBg);
 
-        adapter.notifyDataSetChanged();
+            if(adapter!=null) adapter.notifyDataSetChanged();
+        } catch(Exception e){ android.util.Log.e("QuestLog","render crash",e); }
     }
 
     void save(){
@@ -122,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
             String raw=getSharedPreferences("questlog",MODE_PRIVATE).getString("quests",null);
             if(raw!=null){ JSONArray arr=new JSONArray(raw); for(int i=0;i<arr.length();i++){ JSONObject o=arr.getJSONObject(i); quests.add(new Quest(o.getString("id"),o.getString("title"),o.getInt("diff"),o.getBoolean("done"),o.optLong("created",System.currentTimeMillis()))); } return; }
         }catch(Exception e){}
-        quests.add(new Quest("q1","Complete portfolio polish — Bloom & Branch",7,false,System.currentTimeMillis()));
-        quests.add(new Quest("q2","Solve 3 DSA — arrays + DP",6,false,System.currentTimeMillis()-1000));
-        quests.add(new Quest("q3","Read OS notes — paging",4,true,System.currentTimeMillis()-2000));
+        quests.add(new Quest("q1","Complete portfolio polish",7,false,System.currentTimeMillis()));
+        quests.add(new Quest("q2","Solve 3 DSA - arrays + DP",6,false,System.currentTimeMillis()-1000));
+        quests.add(new Quest("q3","Read OS notes - paging",4,true,System.currentTimeMillis()-2000));
     }
 
     class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.VH>{
@@ -139,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
             h.xpPill.setText("+"+q.xp+" XP");
             int[] diffColors={0xFF2d8a4e,0xFF2d8a4e,0xFF2d8a4e,0xFFc9a227,0xFFc9a227,0xFFc9a227,0xFFe67e22,0xFFe67e22,0xFFff4444,0xFFff4444};
             h.diffPill.setBackgroundColor(diffColors[q.diff-1]);
-            h.check.setChecked(q.done);
             h.check.setOnCheckedChangeListener(null);
+            h.check.setChecked(q.done);
             h.check.setOnCheckedChangeListener((v,checked)->{
                 int before=rankIndex(totalXp());
                 q.done=checked;
@@ -149,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 String msg=checked? "+"+q.xp+" XP!":"- "+q.xp+" XP";
                 Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                 if(checked && after>before){
-                    Toast.makeText(MainActivity.this, "★ RANK UP! You are now "+rankIds[after]+" — "+rankNames[after], Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Rank up! You are now "+rankIds[after]+" - "+rankNames[after], Toast.LENGTH_LONG).show();
                 }
             });
             h.deleteBtn.setOnClickListener(v->{ quests.remove(q); save(); render(); });
