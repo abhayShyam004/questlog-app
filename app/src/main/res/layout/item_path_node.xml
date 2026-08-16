@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <!-- Wobble offset container -->
+    <LinearLayout android:id="@+id/pathRow" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center">
+
+        <!-- Node circle -->
+        <TextView android:id="@+id/nodeCircle" android:layout_width="72dp" android:layout_height="72dp" android:gravity="center" android:textSize="22sp" android:textStyle="bold"/>
+
+        <!-- Label pill below node -->
+        <TextView android:id="@+id/nodeLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="LV.5 +50 XP" android:textSize="9sp" android:textStyle="bold" android:paddingLeft="8dp" android:paddingRight="8dp" android:paddingTop="3dp" android:paddingBottom="3dp" android:layout_marginTop="6dp"/>
+
+        <!-- Quest title -->
+        <TextView android:id="@+id/nodeTitle" android:layout_width="220dp" android:layout_height="wrap_content" android:text="Quest title" android:textColor="#1a1433" android:textSize="12sp" android:textStyle="bold" android:gravity="center" android:maxLines="2" android:ellipsize="end" android:layout_marginTop="4dp"/>
+
+        <!-- Connector down -->
+        <View android:id="@+id/connector" android:layout_width="4dp" android:layout_height="24dp" android:background="#e5e5e5" android:layout_marginTop="4dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
