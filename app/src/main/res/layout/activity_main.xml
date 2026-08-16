@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0e0e1a">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="#0e0e1a"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:elevation="4dp">
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="#c9a227"
+            android:text="⚔"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:textColor="#0e0e1a"/>
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
+            <TextView android:text="QUEST LOG" android:textColor="#f4e4bc" android:textSize="13sp" android:fontFamily="monospace" android:textStyle="bold" android:letterSpacing="0.08"/>
+            <TextView android:text="PIXEL RPG  •  TODO" android:textColor="#c9a227" android:textSize="11sp" android:fontFamily="monospace" android:letterSpacing="0.12"/>
+        </LinearLayout>
+        <TextView android:id="@+id/rankBadge" android:layout_width="44dp" android:layout_height="44dp" android:background="#5a5a6a" android:text="E" android:textColor="#fff" android:textSize="18sp" android:textStyle="bold" android:gravity="center" android:fontFamily="monospace"/>
+    </LinearLayout>
+
+    <!-- Hero Card -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="#1a1433" android:layout_margin="12dp" android:padding="14dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:text="🧙" android:textSize="32sp" android:layout_width="56dp" android:layout_height="56dp" android:background="#2a2440" android:gravity="center"/>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
+                <TextView android:text="HERO  •  VIT BHOPAL" android:textColor="#c9a227" android:textSize="9sp" android:fontFamily="monospace" android:letterSpacing="0.14"/>
+                <TextView android:id="@+id/heroLevel" android:text="LV.1  •  0 XP" android:textColor="#f4e4bc" android:textSize="15sp" android:fontFamily="monospace" android:textStyle="bold"/>
+                <TextView android:id="@+id/rankLabel" android:text="E — Novice" android:textColor="#f4e4bc" android:alpha="0.7" android:textSize="11sp" android:fontFamily="monospace"/>
+            </LinearLayout>
+        </LinearLayout>
+        <TextView android:id="@+id/xpLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 / 100 XP → D" android:textColor="#c9a227" android:textSize="10sp" android:fontFamily="monospace" android:layout_marginTop="12dp"/>
+        <ProgressBar android:id="@+id/xpBar" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="14dp" android:max="100" android:progress="6" android:progressTint="#ffd700" android:progressBackgroundTint="#0e0e1a" android:layout_marginTop="6dp"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="E 0 • D 100 • C 300 • B 600 • A 1000 • S 1600" android:textColor="#f4e4bc" android:alpha="0.5" android:textSize="9sp" android:fontFamily="monospace"/>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/badgesRow" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp"/>
+    </LinearLayout>
+
+    <!-- Add Quest -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="#f4e4bc" android:layout_marginHorizontal="12dp" android:padding="12dp">
+        <TextView android:text="◆  NEW QUEST  •  EXP = LV × 10" android:textColor="#1a1433" android:textSize="9sp" android:fontFamily="monospace" android:textStyle="bold" android:letterSpacing="0.08"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp">
+            <EditText android:id="@+id/questInput" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1" android:background="#ffffff" android:hint="Enter quest…" android:textColor="#1a1433" android:hintTextColor="#1a1433" android:alpha="0.5" android:paddingHorizontal="12dp" android:textSize="14sp" android:singleLine="true"/>
+            <Button android:id="@+id/addBtn" android:layout_width="wrap_content" android:layout_height="48dp" android:text="+ ADD" android:textColor="#0e0e1a" android:backgroundTint="#c9a227" android:textSize="10sp" android:fontFamily="monospace" android:layout_marginStart="8dp"/>
+        </LinearLayout>
+        <TextView android:text="DIFFICULTY — 1 EASY  →  10 BOSS" android:textColor="#1a1433" android:alpha="0.7" android:textSize="9sp" android:fontFamily="monospace" android:layout_marginTop="12dp"/>
+        <SeekBar android:id="@+id/diffSeek" android:layout_width="match_parent" android:layout_height="wrap_content" android:max="9" android:progress="4" android:thumbTint="#c9a227" android:progressTint="#c9a227" android:progressBackgroundTint="#2a2440" android:layout_marginTop="4dp"/>
+        <TextView android:id="@+id/diffLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="LV. 5  →  +50 XP" android:textColor="#0e0e1a" android:background="#c9a227" android:paddingHorizontal="8dp" android:paddingVertical="4dp" android:textSize="10sp" android:fontFamily="monospace" android:textStyle="bold" android:layout_marginTop="6dp"/>
+    </LinearLayout>
+
+    <!-- Filter -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_margin="12dp">
+        <Button android:id="@+id/tabAll" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1" android:text="ALL" android:textSize="9sp" android:fontFamily="monospace" android:backgroundTint="#c9a227" android:textColor="#0e0e1a"/>
+        <Button android:id="@+id/tabActive" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1" android:text="ACTIVE" android:textSize="9sp" android:fontFamily="monospace" android:backgroundTint="#2a2440" android:textColor="#f4e4bc" android:layout_marginStart="6dp"/>
+        <Button android:id="@+id/tabDone" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1" android:text="CLEARED" android:textSize="9sp" android:fontFamily="monospace" android:backgroundTint="#2a2440" android:textColor="#f4e4bc" android:layout_marginStart="6dp"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/recycler" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:padding="12dp" android:clipToPadding="false"/>
+
+</LinearLayout>

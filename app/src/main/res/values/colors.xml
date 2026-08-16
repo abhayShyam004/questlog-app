@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ink">#0e0e1a</color>
+    <color name="panel">#1a1433</color>
+    <color name="cream">#f4e4bc</color>
+    <color name="gold">#c9a227</color>
+    <color name="goldLight">#ffe27a</color>
+    <color name="goldDark">#8a6d0a</color>
+    <color name="border">#2a2440</color>
+    <string name="app_name">Quest Log</string>
+</resources>

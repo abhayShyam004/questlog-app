@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.QuestLog" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#c9a227</item>
+        <item name="android:statusBarColor">#0e0e1a</item>
+        <item name="android:windowBackground">#0e0e1a</item>
+    </style>
+</resources>

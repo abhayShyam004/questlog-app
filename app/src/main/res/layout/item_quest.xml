@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#f4e4bc"
+    android:padding="12dp"
+    android:layout_marginBottom="10dp">
+
+    <CheckBox android:id="@+id/checkDone" android:layout_width="28dp" android:layout_height="28dp" android:buttonTint="#2d8a4e"/>
+
+    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="10dp">
+        <TextView android:id="@+id/title" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Quest title" android:textColor="#1a1433" android:textSize="14sp" android:fontFamily="sans-serif-medium"/>
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+            <TextView android:id="@+id/diffPill" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="LV.5" android:textSize="9sp" android:textColor="#0e0e1a" android:background="#c9a227" android:paddingHorizontal="6dp" android:paddingVertical="2dp" android:fontFamily="monospace" android:textStyle="bold"/>
+            <TextView android:id="@+id/xpPill" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+50 XP" android:textSize="9sp" android:textColor="#ffd700" android:background="#1a1433" android:paddingHorizontal="6dp" android:paddingVertical="2dp" android:fontFamily="monospace" android:layout_marginStart="6dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView android:id="@+id/deleteBtn" android:layout_width="36dp" android:layout_height="36dp" android:text="✕" android:gravity="center" android:textColor="#ff4444" android:textSize="16sp" android:background="#0e0e1a"/>
+
+</LinearLayout>
