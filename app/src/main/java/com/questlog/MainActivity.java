@@ -1,13 +1,15 @@
 package com.questlog;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.*;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     TextView statQuests, statXp, statRank, countActive, countDone, streakTop, gemsTop, bannerTitle, bannerSub;
     ProgressBar xpBar;
     LinearLayout badgesRow, ladderRow, diffDots, pathContainer;
+    View rankBadgeWrap;
     SeekBar diffSeek;
     EditText questInput;
 
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             setContentView(R.layout.activity_main);
             rankBadge=findViewById(R.id.rankBadge);
+            rankBadgeWrap=findViewById(R.id.rankBadgeWrap);
             heroLevel=findViewById(R.id.heroLevel);
             rankLabel=findViewById(R.id.rankLabel);
             xpLabel=findViewById(R.id.xpLabel);
@@ -75,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onStopTrackingTouch(SeekBar s){}
             });
             View addBtn = findViewById(R.id.addBtn);
-            if(addBtn!=null) addBtn.setOnClickListener(v->addQuest());
+            if(addBtn!=null) addBtn.setOnClickListener(v->{ v.startAnimation(AnimationUtils.loadAnimation(this,R.anim.bounce)); addQuest(); });
             questInput.setOnEditorActionListener((v,a,e)->{ addQuest(); return true; });
             View tabAll=findViewById(R.id.tabAll), tabActive=findViewById(R.id.tabActive), tabDone=findViewById(R.id.tabDone);
             if(tabAll!=null) tabAll.setOnClickListener(v->setFilter("all"));
@@ -85,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             if(clearBtn!=null) clearBtn.setOnClickListener(v->{ quests.removeIf(q->q.done); save(); render(); Toast.makeText(this,"Cleared!",Toast.LENGTH_SHORT).show(); });
             for(String c: catIds){
                 View v=findViewById(getResources().getIdentifier("cat"+cap(c),"id",getPackageName()));
-                if(v!=null) v.setOnClickListener(view->setCat(c));
+                if(v!=null) v.setOnClickListener(view->{ setCat(c); view.startAnimation(AnimationUtils.loadAnimation(this,R.anim.bounce)); });
             }
             updateCatUI();
             render();
@@ -113,10 +117,10 @@ public class MainActivity extends AppCompatActivity {
         for(int i=1;i<=10;i++){
             final int lv=i;
             TextView d=new TextView(this);
-            d.setText(String.valueOf(i)); d.setTextSize(9); d.setGravity(Gravity.CENTER);
-            d.setPadding(0,8,0,8);
-            LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(0,-2,1); lp.setMargins(i>1?4:0,0,0,0); d.setLayoutParams(lp);
-            d.setOnClickListener(v->{ selectedDiff=lv; diffSeek.setProgress(lv-1); updateDiffLabel(); highlightDiffDots(); });
+            d.setText(String.valueOf(i)); d.setTextSize(10); d.setGravity(Gravity.CENTER);
+            d.setPadding(0,10,0,10);
+            LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(0,-2,1); lp.setMargins(i>1?6:0,0,0,0); d.setLayoutParams(lp);
+            d.setOnClickListener(v->{ selectedDiff=lv; diffSeek.setProgress(lv-1); updateDiffLabel(); highlightDiffDots(); v.startAnimation(AnimationUtils.loadAnimation(this,R.anim.bounce)); });
             diffDots.addView(d);
         }
         highlightDiffDots();
@@ -170,8 +174,16 @@ public class MainActivity extends AppCompatActivity {
             if(heroLevel!=null) heroLevel.setText("LV."+(xp/100+1)+"  -  "+xp+" XP");
             if(rankLabel!=null) rankLabel.setText(rankNames[ri]);
             if(xpLabel!=null) xpLabel.setText(isMax ? xp+" / MAX" : xp+" / "+nextMin+"  ->  "+rankIds[ri+1]);
-            if(xpBar!=null){ xpBar.setMax(100); xpBar.setProgress(prog); }
-            if(rankBadge!=null){ rankBadge.setText(rankIds[ri]); rankBadge.setBackgroundColor(rankColors[ri]); rankBadge.setTextColor(ri==5?0xFF1a1433:0xFFffffff); }
+            if(xpBar!=null){
+                // animate progress
+                ObjectAnimator.ofInt(xpBar, "progress", xpBar.getProgress(), prog).setDuration(600).start();
+            }
+            if(rankBadge!=null){
+                rankBadge.setText(rankIds[ri]);
+                if(rankBadgeWrap!=null) rankBadgeWrap.setBackgroundColor(rankColors[ri]);
+                else rankBadge.setBackgroundColor(rankColors[ri]);
+                rankBadge.setTextColor(ri==5?0xFF1a1433:0xFFffffff);
+            }
             if(streakTop!=null) streakTop.setText(String.valueOf(streak()));
             if(gemsTop!=null) gemsTop.setText(String.valueOf(xp));
             if(statQuests!=null) statQuests.setText(String.valueOf(quests.stream().filter(q->q.done).count()));
@@ -186,11 +198,12 @@ public class MainActivity extends AppCompatActivity {
                 ladderRow.removeAllViews();
                 for(int i=0;i<rankIds.length;i++){
                     TextView tv=new TextView(this);
-                    tv.setText(rankIds[i]); tv.setTextSize(10); tv.setGravity(Gravity.CENTER); tv.setPadding(0,8,0,8);
+                    tv.setText(rankIds[i]); tv.setTextSize(10); tv.setGravity(Gravity.CENTER); tv.setPadding(0,10,0,10);
                     LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(0,-2,1); lp.setMargins(i>0?6:0,0,0,0); tv.setLayoutParams(lp);
                     boolean unlocked=xp>=rankMins[i];
                     tv.setBackgroundColor(unlocked?rankColors[i]:0xFFe5e5e5);
                     tv.setTextColor(unlocked? (i==5?0xFF1a1433:0xFFffffff):0xFF999999);
+                    tv.setAlpha(unlocked?1f:0.7f);
                     ladderRow.addView(tv);
                 }
             }
@@ -199,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
                 for(int i=0;i<=ri;i++){
                     TextView tv=new TextView(this);
                     tv.setText(rankIds[i]); tv.setTextSize(10); tv.setTextColor(i==5?0xFF1a1433:0xFFffffff);
-                    tv.setPadding(18,8,18,8); tv.setBackgroundColor(rankColors[i]);
+                    tv.setPadding(18,9,18,9); tv.setBackgroundColor(rankColors[i]);
                     LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(-2,-2); lp.setMargins(0,0,8,0); tv.setLayoutParams(lp);
                     badgesRow.addView(tv);
                 }
@@ -223,57 +236,48 @@ public class MainActivity extends AppCompatActivity {
         List<Quest> list=new ArrayList<>();
         for(Quest q: quests){ if(filter.equals("active")&&q.done) continue; if(filter.equals("done")&&!q.done) continue; list.add(q); }
         Collections.sort(list,(a,b)-> Long.compare(b.created,a.created));
-        // Path order: newest at top like Duolingo — reverse so first quest is top star
-        // Actually keep b.created desc so newest top
         LayoutInflater inf=LayoutInflater.from(this);
-        int[] wobble={0, 42, -42, 28, -28, 42, -20, 36, -36, 0}; // px offsets for winding
+        int[] wobble={0, 48, -48, 32, -32, 48, -24, 40, -40, 0};
 
         for(int idx=0; idx<list.size(); idx++){
             Quest q=list.get(idx);
             View row=inf.inflate(R.layout.item_path_node, pathContainer, false);
-            TextView circle=row.findViewById(R.id.nodeCircle);
+            LinearLayout nodeCircle=row.findViewById(R.id.nodeCircle);
+            ImageView nodeIcon=row.findViewById(R.id.nodeIcon);
             TextView label=row.findViewById(R.id.nodeLabel);
             TextView title=row.findViewById(R.id.nodeTitle);
             View connector=row.findViewById(R.id.connector);
-            LinearLayout pathRow=row.findViewById(R.id.pathRow);
+            TextView xpPop=row.findViewById(R.id.xpPop);
 
-            // Winding offset
+            // Winding offset — use padding on row container
             int off=wobble[idx % wobble.length];
-            LinearLayout.LayoutParams rlp=(LinearLayout.LayoutParams)pathRow.getLayoutParams();
-            if(rlp==null) rlp=new LinearLayout.LayoutParams(-2,-2);
-            rlp.leftMargin=Math.max(0, off+48);
-            pathRow.setLayoutParams(rlp);
+            row.setPadding(Math.max(0, off+48), 0, Math.max(0, -off+48), 0);
 
-            // Node visuals by state/difficulty
-            String icon;
-            int bg;
             boolean isBoss=q.diff>=9;
             boolean isHard=q.diff>=7 && q.diff<=8;
+            int bgRes; int iconRes;
             if(q.done){
-                icon="✓"; bg=0xFF58cc02;
+                bgRes=R.drawable.bg_circle_green; iconRes=R.drawable.ic_node_check;
             } else if(isBoss){
-                icon="C"; bg=0xFFffd900; // chest
+                bgRes=R.drawable.bg_circle_gold; iconRes=R.drawable.ic_node_chest;
             } else if(isHard){
-                icon="D"; bg=0xFFff9600; // dumbbell
+                bgRes=R.drawable.bg_circle_orange; iconRes=R.drawable.ic_node_dumbbell;
             } else {
-                icon="*"; bg=0xFF1cb0f6; // star
+                bgRes=R.drawable.bg_circle_blue; iconRes=R.drawable.ic_node_star;
             }
-            // Locked look if previous quest not done and not first
-            boolean locked=false;
-            if(idx>0 && !list.get(idx-1).done && !q.done){
-                // not strictly Duolingo lock, but keep subtle — all visible but grey if chain broken
-                // For now don't hard-lock, just keep active
-            }
-            circle.setText(icon);
-            circle.setBackgroundColor(bg);
-            circle.setTextColor(0xFFffffff);
-            // Make circle round via background tint simulation — use solid color already
-            // Add border via padding trick: already white stroke in drawable, so just color
+            nodeCircle.setBackgroundResource(bgRes);
+            nodeCircle.setElevation(q.done?2f:8f);
+            nodeIcon.setImageResource(iconRes);
+            if(q.done) nodeIcon.setAlpha(1f); else nodeIcon.setAlpha(1f);
 
             label.setText("LV."+q.diff+"  +"+q.xp+" XP  •  "+q.cat);
-            label.setBackgroundColor(q.done?0xFF58cc02:0xFF1cb0f6);
-            label.setTextColor(0xFFffffff);
-            if(isBoss && !q.done){ label.setBackgroundColor(0xFFffd900); label.setTextColor(0xFF1a1433); }
+            if(q.done){ label.setBackgroundResource(R.drawable.bg_pill_blue); label.setBackgroundColor(0xFF58cc02); label.setTextColor(0xFFffffff); }
+            else if(isBoss){ label.setBackgroundResource(R.drawable.bg_pill_gold); label.setTextColor(0xFF1a1433); }
+            else { label.setBackgroundResource(R.drawable.bg_pill_blue); label.setTextColor(0xFFffffff); }
+            // override with solid after resource
+            if(q.done) label.setBackgroundColor(0xFF58cc02);
+            else if(isBoss) label.setBackgroundColor(0xFFffd900);
+            else label.setBackgroundColor(0xFF1cb0f6);
 
             title.setText(q.title);
             title.setAlpha(q.done?0.5f:1f);
@@ -281,29 +285,48 @@ public class MainActivity extends AppCompatActivity {
             else title.setPaintFlags(title.getPaintFlags() & ~android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
 
             if(idx==list.size()-1) connector.setVisibility(View.INVISIBLE);
+            else connector.setBackgroundColor(0xFFe5e5e5);
 
-            // Tap node to toggle
-            View tap=circle;
-            tap.setOnClickListener(v->{
+            // Staggered enter animation
+            Animation enter=AnimationUtils.loadAnimation(this,R.anim.node_enter);
+            enter.setStartOffset(idx*90L);
+            row.startAnimation(enter);
+
+            // Tap to toggle with bounce + XP pop
+            View.OnClickListener toggle= v->{
                 int before=rankIndex(totalXp());
                 q.done=!q.done;
                 int after=rankIndex(totalXp());
+                // XP pop
+                if(q.done && xpPop!=null){
+                    xpPop.setText("+"+q.xp+" XP");
+                    xpPop.setVisibility(View.VISIBLE);
+                    Animation rise=AnimationUtils.loadAnimation(MainActivity.this,R.anim.xp_rise);
+                    xpPop.startAnimation(rise);
+                    new Handler().postDelayed(()->xpPop.setVisibility(View.GONE), 720);
+                }
+                View circleAnim=nodeCircle;
+                circleAnim.startAnimation(AnimationUtils.loadAnimation(MainActivity.this,R.anim.bounce));
                 save(); render();
-                Toast.makeText(this, q.done? "+"+q.xp+" XP!":"- "+q.xp+" XP", Toast.LENGTH_SHORT).show();
-                if(q.done && after>before) Toast.makeText(this, "★ RANK UP! "+rankIds[after]+" — "+rankNames[after], Toast.LENGTH_LONG).show();
-            });
-            // Long press to delete
-            tap.setOnLongClickListener(v->{ quests.remove(q); save(); render(); Toast.makeText(this,"Deleted",Toast.LENGTH_SHORT).show(); return true; });
-            row.findViewById(R.id.nodeLabel).setOnClickListener(v->tap.performClick());
-            title.setOnClickListener(v->tap.performClick());
+                Toast.makeText(MainActivity.this, q.done? "+"+q.xp+" XP!":"- "+q.xp+" XP", Toast.LENGTH_SHORT).show();
+                if(q.done && after>before){
+                    if(rankBadgeWrap!=null) rankBadgeWrap.startAnimation(AnimationUtils.loadAnimation(MainActivity.this,R.anim.pop));
+                    Toast.makeText(MainActivity.this, "★ RANK UP! "+rankIds[after]+" — "+rankNames[after], Toast.LENGTH_LONG).show();
+                }
+            };
+            nodeCircle.setOnClickListener(toggle);
+            nodeIcon.setOnClickListener(toggle);
+            label.setOnClickListener(toggle);
+            title.setOnClickListener(toggle);
+            row.setOnLongClickListener(v->{ quests.remove(q); save(); render(); Toast.makeText(this,"Deleted",Toast.LENGTH_SHORT).show(); return true; });
 
             pathContainer.addView(row);
         }
         if(list.isEmpty()){
             TextView empty=new TextView(this);
-            empty.setText("No quests here — add one above and it appears on the path.");
+            empty.setText("No quests — add one above and it appears on the path.");
             empty.setTextColor(0xFF999999); empty.setTextSize(12); empty.setGravity(Gravity.CENTER);
-            empty.setPadding(24,24,24,24);
+            empty.setPadding(24,32,24,32);
             pathContainer.addView(empty);
         }
     }
