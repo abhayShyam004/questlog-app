@@ -5,72 +5,129 @@
     android:orientation="vertical"
     android:background="#0e0e1a">
 
+    <!-- Top bar — pixel frame -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="58dp"
         android:background="#0e0e1a"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp">
 
-        <TextView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="#c9a227"
-            android:text="Q"
-            android:textSize="22sp"
-            android:gravity="center"
-            android:textColor="#0e0e1a"
-            android:textStyle="bold"/>
-
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginLeft="12dp">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="QUEST LOG" android:textColor="#f4e4bc" android:textSize="13sp" android:textStyle="bold"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PIXEL RPG  +  TODO" android:textColor="#c9a227" android:textSize="11sp"/>
+        <LinearLayout android:layout_width="42dp" android:layout_height="42dp" android:background="#c9a227" android:gravity="center" android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Q" android:textColor="#0e0e1a" android:textSize="22sp" android:textStyle="bold"/>
         </LinearLayout>
 
-        <TextView android:id="@+id/rankBadge" android:layout_width="44dp" android:layout_height="44dp" android:background="#5a5a6a" android:text="E" android:textColor="#fff" android:textSize="18sp" android:textStyle="bold" android:gravity="center"/>
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginLeft="10dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="QUEST LOG" android:textColor="#f4e4bc" android:textSize="14sp" android:textStyle="bold" android:letterSpacing="0.06"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PIXEL RPG  •  Difficulty 1-10 = EXP" android:textColor="#c9a227" android:textSize="9sp" android:letterSpacing="0.08"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center">
+            <TextView android:id="@+id/rankBadge" android:layout_width="44dp" android:layout_height="44dp" android:background="#5a5a6a" android:text="E" android:textColor="#fff" android:textSize="20sp" android:textStyle="bold" android:gravity="center"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="RANK" android:textColor="#c9a227" android:textSize="7sp" android:letterSpacing="0.14" android:layout_marginTop="2dp"/>
+        </LinearLayout>
     </LinearLayout>
+
+    <!-- Gold rule -->
+    <View android:layout_width="match_parent" android:layout_height="3dp" android:background="#c9a227"/>
 
     <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingBottom="14dp">
 
-    <!-- Hero Card -->
+    <!-- HERO CARD — XP, level, ladder -->
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="#1a1433" android:layout_margin="12dp" android:padding="14dp">
+
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
-            <TextView android:text="H" android:textSize="28sp" android:layout_width="56dp" android:layout_height="56dp" android:background="#2a2440" android:gravity="center" android:textColor="#c9a227" android:textStyle="bold"/>
+            <LinearLayout android:layout_width="56dp" android:layout_height="56dp" android:background="#2a2440" android:gravity="center">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="H" android:textColor="#c9a227" android:textSize="26sp" android:textStyle="bold"/>
+            </LinearLayout>
             <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginLeft="12dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="HERO  +  VIT BHOPAL" android:textColor="#c9a227" android:textSize="9sp"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/heroLevel" android:text="LV.1  +  0 XP" android:textColor="#f4e4bc" android:textSize="15sp" android:textStyle="bold"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/rankLabel" android:text="E - Novice" android:textColor="#f4e4bc" android:textSize="11sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="HERO  •  VIT BHOPAL" android:textColor="#c9a227" android:textSize="8sp" android:letterSpacing="0.12"/>
+                <TextView android:id="@+id/heroLevel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="LV.1  •  0 XP" android:textColor="#f4e4bc" android:textSize="16sp" android:textStyle="bold"/>
+                <TextView android:id="@+id/rankLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="E — Novice" android:textColor="#f4e4bc" android:textSize="11sp"/>
+            </LinearLayout>
+            <TextView android:id="@+id/streakBadge" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 DAY STREAK" android:textColor="#0e0e1a" android:background="#c9a227" android:paddingLeft="8dp" android:paddingRight="8dp" android:paddingTop="4dp" android:paddingBottom="4dp" android:textSize="8sp" android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- XP bar -->
+        <TextView android:id="@+id/xpLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 / 100 XP  →  D" android:textColor="#c9a227" android:textSize="10sp" android:textStyle="bold" android:layout_marginTop="12dp"/>
+        <ProgressBar android:id="@+id/xpBar" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="16dp" android:max="100" android:progress="6" android:layout_marginTop="6dp"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="E 0  •  D 100  •  C 300  •  B 600  •  A 1000  •  S 1600" android:textColor="#f4e4bc" android:textSize="8sp" android:layout_marginTop="6dp"/>
+
+        <!-- 3 stats -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="12dp">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:background="#0e0e1a" android:padding="10dp" android:layout_marginRight="6dp">
+                <TextView android:id="@+id/statQuests" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="#f4e4bc" android:textSize="18sp" android:textStyle="bold" android:layout_gravity="center"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="QUESTS DONE" android:textColor="#c9a227" android:textSize="7sp" android:letterSpacing="0.08" android:layout_gravity="center"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:background="#0e0e1a" android:padding="10dp" android:layout_marginRight="6dp">
+                <TextView android:id="@+id/statXp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="#f4e4bc" android:textSize="18sp" android:textStyle="bold" android:layout_gravity="center"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TOTAL XP" android:textColor="#c9a227" android:textSize="7sp" android:layout_gravity="center"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:background="#0e0e1a" android:padding="10dp">
+                <TextView android:id="@+id/statRank" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="E" android:textColor="#f4e4bc" android:textSize="18sp" android:textStyle="bold" android:layout_gravity="center"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="RANK" android:textColor="#c9a227" android:textSize="7sp" android:layout_gravity="center"/>
             </LinearLayout>
         </LinearLayout>
-        <TextView android:id="@+id/xpLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 / 100 XP -&gt; D" android:textColor="#c9a227" android:textSize="10sp" android:layout_marginTop="12dp"/>
-        <ProgressBar android:id="@+id/xpBar" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="14dp" android:max="100" android:progress="6" android:layout_marginTop="6dp"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="E 0 - D 100 - C 300 - B 600 - A 1000 - S 1600" android:textColor="#f4e4bc" android:textSize="9sp" android:layout_marginTop="8dp"/>
-        <LinearLayout android:id="@+id/badgesRow" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp"/>
-    </LinearLayout>
 
-    <!-- Add Quest -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="#f4e4bc" android:layout_marginLeft="12dp" android:layout_marginRight="12dp" android:padding="12dp">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="NEW QUEST  -  EXP = LV x 10" android:textColor="#1a1433" android:textSize="9sp" android:textStyle="bold"/>
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp">
-            <EditText android:id="@+id/questInput" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1" android:background="#ffffff" android:hint="Enter quest..." android:textColor="#1a1433" android:textColorHint="#8a7a5a" android:paddingLeft="12dp" android:paddingRight="12dp" android:textSize="14sp" android:singleLine="true" android:inputType="text"/>
-            <TextView android:id="@+id/addBtn" android:layout_width="wrap_content" android:layout_height="48dp" android:text="+ ADD" android:textColor="#0e0e1a" android:background="#c9a227" android:textSize="11sp" android:textStyle="bold" android:gravity="center" android:paddingLeft="14dp" android:paddingRight="14dp" android:layout_marginLeft="8dp" android:clickable="true" android:focusable="true"/>
+        <!-- Ladder -->
+        <LinearLayout android:id="@+id/ladderRow" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="12dp"/>
+
+        <!-- Badges -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="#f4e4bc" android:padding="10dp" android:layout_marginTop="12dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BADGES  •  Rank up to forge" android:textColor="#1a1433" android:textSize="8sp" android:textStyle="bold" android:letterSpacing="0.08"/>
+            <LinearLayout android:id="@+id/badgesRow" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp"/>
         </LinearLayout>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DIFFICULTY - 1 EASY  -&gt;  10 BOSS" android:textColor="#1a1433" android:textSize="9sp" android:layout_marginTop="12dp"/>
-        <SeekBar android:id="@+id/diffSeek" android:layout_width="match_parent" android:layout_height="wrap_content" android:max="9" android:progress="4" android:layout_marginTop="4dp"/>
-        <TextView android:id="@+id/diffLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="LV. 5  -&gt;  +50 XP" android:textColor="#0e0e1a" android:background="#c9a227" android:paddingLeft="8dp" android:paddingRight="8dp" android:paddingTop="4dp" android:paddingBottom="4dp" android:textSize="10sp" android:textStyle="bold" android:layout_marginTop="6dp"/>
     </LinearLayout>
 
-    <!-- Filter -->
+    <!-- ADD QUEST — the star -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="#f4e4bc" android:layout_marginLeft="12dp" android:layout_marginRight="12dp" android:padding="12dp">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="NEW QUEST  •  EXP = LV × 10  •  Boss (10) = 100 XP" android:textColor="#1a1433" android:textSize="8sp" android:textStyle="bold"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp">
+            <EditText android:id="@+id/questInput" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1" android:background="#ffffff" android:hint="Enter quest — e.g. Solve 3 DSA..." android:textColor="#1a1433" android:textColorHint="#8a7a5a" android:paddingLeft="12dp" android:paddingRight="12dp" android:textSize="14sp" android:singleLine="true" android:inputType="text"/>
+            <TextView android:id="@+id/addBtn" android:layout_width="wrap_content" android:layout_height="48dp" android:text="+ ADD" android:textColor="#0e0e1a" android:background="#c9a227" android:textSize="11sp" android:textStyle="bold" android:gravity="center" android:paddingLeft="16dp" android:paddingRight="16dp" android:layout_marginLeft="8dp" android:clickable="true" android:focusable="true"/>
+        </LinearLayout>
+
+        <!-- Category + Difficulty -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CATEGORY" android:textColor="#1a1433" android:textSize="8sp" android:textStyle="bold" android:layout_gravity="center_vertical"/>
+            <TextView android:id="@+id/catStudy" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="STUDY" android:textSize="8sp" android:textStyle="bold" android:background="#c9a227" android:textColor="#0e0e1a" android:paddingLeft="8dp" android:paddingRight="8dp" android:paddingTop="4dp" android:paddingBottom="4dp" android:layout_marginLeft="8dp" android:clickable="true"/>
+            <TextView android:id="@+id/catCode" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CODE" android:textSize="8sp" android:background="#e8dcc0" android:textColor="#1a1433" android:paddingLeft="8dp" android:paddingRight="8dp" android:paddingTop="4dp" android:paddingBottom="4dp" android:layout_marginLeft="6dp" android:clickable="true"/>
+            <TextView android:id="@+id/catHealth" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="HEALTH" android:textSize="8sp" android:background="#e8dcc0" android:textColor="#1a1433" android:paddingLeft="8dp" android:paddingRight="8dp" android:paddingTop="4dp" android:paddingBottom="4dp" android:layout_marginLeft="6dp" android:clickable="true"/>
+            <TextView android:id="@+id/catLife" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="LIFE" android:textSize="8sp" android:background="#e8dcc0" android:textColor="#1a1433" android:paddingLeft="8dp" android:paddingRight="8dp" android:paddingTop="4dp" android:paddingBottom="4dp" android:layout_marginLeft="6dp" android:clickable="true"/>
+        </LinearLayout>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DIFFICULTY — Drag  1 Easy  →  10 Boss" android:textColor="#1a1433" android:textSize="9sp" android:layout_marginTop="10dp"/>
+        <SeekBar android:id="@+id/diffSeek" android:layout_width="match_parent" android:layout_height="wrap_content" android:max="9" android:progress="4" android:layout_marginTop="4dp"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp" android:gravity="center_vertical">
+            <TextView android:id="@+id/diffLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="LV. 5  →  +50 XP" android:textColor="#0e0e1a" android:background="#c9a227" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="6dp" android:paddingBottom="6dp" android:textSize="11sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/diffHint" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Balanced — solid XP" android:textColor="#1a1433" android:textSize="10sp" android:layout_marginLeft="8dp"/>
+            <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="10 dots below = tap to set" android:textColor="#8a7a5a" android:textSize="8sp"/>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/diffDots" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp"/>
+    </LinearLayout>
+
+    <!-- Filters -->
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_margin="12dp">
-        <TextView android:id="@+id/tabAll" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1" android:text="ALL" android:textSize="10sp" android:textStyle="bold" android:background="#c9a227" android:textColor="#0e0e1a" android:gravity="center" android:clickable="true" android:focusable="true"/>
-        <TextView android:id="@+id/tabActive" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1" android:text="ACTIVE" android:textSize="10sp" android:background="#2a2440" android:textColor="#f4e4bc" android:gravity="center" android:layout_marginLeft="6dp" android:clickable="true" android:focusable="true"/>
-        <TextView android:id="@+id/tabDone" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1" android:text="CLEARED" android:textSize="10sp" android:background="#2a2440" android:textColor="#f4e4bc" android:gravity="center" android:layout_marginLeft="6dp" android:clickable="true" android:focusable="true"/>
+        <TextView android:id="@+id/tabAll" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:text="ALL" android:textSize="10sp" android:textStyle="bold" android:background="#c9a227" android:textColor="#0e0e1a" android:gravity="center" android:clickable="true" android:focusable="true"/>
+        <TextView android:id="@+id/tabActive" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:text="ACTIVE" android:textSize="10sp" android:background="#2a2440" android:textColor="#f4e4bc" android:gravity="center" android:layout_marginLeft="6dp" android:clickable="true" android:focusable="true"/>
+        <TextView android:id="@+id/tabDone" android:layout_width="0dp" android:layout_height="38dp" android:layout_weight="1" android:text="CLEARED" android:textSize="10sp" android:background="#2a2440" android:textColor="#f4e4bc" android:gravity="center" android:layout_marginLeft="6dp" android:clickable="true" android:focusable="true"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginLeft="12dp" android:layout_marginRight="12dp" android:layout_marginBottom="6dp">
+        <TextView android:id="@+id/countActive" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 ACTIVE" android:textColor="#c9a227" android:textSize="9sp" android:textStyle="bold"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="  •  " android:textColor="#f4e4bc" android:textSize="9sp"/>
+        <TextView android:id="@+id/countDone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 CLEARED" android:textColor="#f4e4bc" android:textSize="9sp"/>
+        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+        <TextView android:id="@+id/clearBtn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CLEAR CLEARED" android:textColor="#ff6b6b" android:textSize="9sp" android:textStyle="bold" android:clickable="true"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView android:id="@+id/recycler" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingLeft="12dp" android:paddingRight="12dp" android:clipToPadding="false" android:nestedScrollingEnabled="false"/>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Boss quests (9-10) glow. Tap a quest ring to clear • XP flies!" android:textColor="#8a7a5a" android:textSize="9sp" android:layout_marginLeft="12dp" android:layout_marginTop="8dp"/>
 
     </LinearLayout>
     </ScrollView>
